@@ -1,0 +1,170 @@
+include mixins
+
+// Hi there! For the source, please go to http://pimvdb.github.com/Plomplex
+
+!!!5
+html
+  head
+    title Plomplex
+
+    mixin css("plot.css")
+
+    mixin js("http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js")
+    mixin js("plot.js")
+
+    script
+      var compress = !{JSON.stringify(compress)};
+      var version = #{version};
+
+  body
+    div#mainContainer
+      div.main
+        div.error
+        div.container.plot
+          canvas.plot
+          div.welcome
+            include welcome
+
+            hr
+
+            span.fakeLink.referencePlot
+              | Generate reference plot:
+              code  f(z) = z
+            span.pleaseWait
+              | Please wait...
+
+            hr
+
+            details.whatsNew
+              summary
+                | What's new in version #{version}?
+              span.fakeLink.dismiss Dismiss
+
+              include whats_new
+
+      form.plot
+        header
+          h1.logo Plomplex
+          div.version v#{version}
+          span.fakeLink.help Help
+
+          div.busy
+            progress
+            span Busy...
+            span.fakeLink.cancelPlotting [cancel]
+
+        table.options
+          tr.mainButtons
+            td(colspan="2")
+              div
+                input.submit(type="submit", value="Plot")
+                input.openImage(type="button", disabled, value="Open image")
+
+          tr.formula
+            td(colspan="2")
+              input.formula(type="text", placeholder="f(z) =", autofocus,
+                autocomplete="off", spellcheck="false", data-key="formula")
+
+          tr.iterations
+            td
+              label.help(data-for=".iterations", title!=tooltips.iterations)
+                | Iterations:
+            td
+              input.iterations(type="number", min="1", max="1000", value="1",
+                autocomplete="off", data-key="iterations")
+
+          tr.size
+            td
+              label(data-for=".width") Size:
+            td
+              div
+                input.width(type="number", min="1", step="1", value="1000",
+                  autocomplete="off", data-key="width")
+                div.timesCharacter &times;
+                input.height(type="number", min="1", step="1", value="1000",
+                  autocomplete="off", data-key="height")
+
+          tr.quality
+            td
+              label.help(data-for=".quality", title!=tooltips.quality)
+                | Quality:
+            td
+              input.quality(type="range", min="0", max="1", step="0.01",
+                value="0.5", autocomplete="off", data-key="quality")
+
+          tr.gridLines
+            td
+              label Grid lines:
+            td
+              label
+                input.gridLines(type="checkbox", checked, data-key="gridLines")
+                | every
+                input.gridLinesWidth(type="text", value="1", autocomplete="off",
+                  spellcheck="false", data-key="gridLinesWidth")
+                | units
+              br
+              label
+                input.gridAxes(type="checkbox", checked, data-key="gridAxes")
+                | bolder axes
+              br
+              label
+                input.gridLabels(type="checkbox", data-key="gridLabels")
+                | number labels on axes
+
+          tr.argument
+            td
+              label(data-for=".argument") Argument:
+            td
+              input.argument(type="range", min="0", max="6.28", step="0.01",
+                value="0", autocomplete="off", data-key="argument")
+
+          tr.modulus
+            td
+              label Modulus:
+            td
+              label
+                input(type="radio", name="modulusType", value="none",
+                  data-key="modulusTypeNone")
+                | Don't draw
+              label
+                input(type="radio", name="modulusType", value="contourLines",
+                  checked, data-key="modulusTypeContourLines")
+                | Contour lines
+              label
+                input(type="radio", name="modulusType", value="luminance",
+                  data-key="modulusTypeLuminance")
+                | Luminance
+                div.luminance.container
+                  span.fakeLink.toggleLink [luminance formula]
+                  br
+                  input.luminanceFormula(type="text",
+                    placeholder="luminance(x) =", data-key="luminanceFormula")
+
+          tr.enableProgress
+            td
+              label(data-for="input.enableProgress") Progress:
+            td
+              label
+                input.enableProgress(type="checkbox", data-key="enableProgress")
+                | Enable progress meter
+
+          tr
+            td(colspan="2")
+              label.help(title!=tooltips.ranges) Ranges
+
+          mixin ranges("re", -5)
+          mixin ranges("im")
+
+    div.help.container
+      div.help.overlay
+        header Help
+        input.close(type="button", value="Close")
+        div.help.content
+          include help/thanks
+          include help/composing_a_function
+          include help/example_functions
+          include help/whats_in_a_plot
+          include help/contour_lines_vs_luminance
+          include help/argument
+          include help/how_to_copy_save
+          include help/faq

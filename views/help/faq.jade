@@ -1,0 +1,16 @@
+details.faq
+  summary
+    | FAQ
+  :markdown
+    - Some parts of the image get black or are destroyed.
+    - This is probably caused by precision errors. Plomplex does not
+      use infinite precision when calculating. When the value of a point
+      gets too large or too small, the generated color of that point has
+      no significance. This most notably happens when iterating many
+      times.
+    - Why is the progress meter a manual opt-in?
+    - Sending progress notifications is rather expensive. For
+      fast plots (simple function/small size/etc), enabling progress
+      notifications slows down plotting significantly. It is
+      recommended to only use it for truly slow plots so as to be
+      able to see how long it is going to take.

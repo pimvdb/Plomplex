@@ -1,0 +1,21 @@
+details
+  summary
+    | Contour lines vs luminance
+  :markdown
+    These are two means of modulus representation.
+
+    *Contour lines* means white and black smooth lines are drawn
+    to express the modulus of complex numbers. White lines are painted
+    where the modulus is a power of `e`, whereas black lines
+    are painted at averages of powers of `e`. Contour lines
+    make it easier to more precisely see how large the modulus is than
+    luminance allows.
+
+    *Luminance* means that the modulus is expressed as a
+    continuously increasing lightness, from black (`0`) to
+    white (infinity). Therefore, luminance makes it relatively easy to
+    tell where zeroes are and where poles are.
+
+    The luminance formula defines how different moduli are mapped to
+    lightness. The function should take any modulus
+    `x >= 0` and evaluate to a value `0 <= luminance <= 1`.

@@ -1,0 +1,5 @@
+{
+  "iterations": "Substitute z with f(z) this many times.\nWarning: many iterations can take long to plot.",
+  "quality": "Lower quality means a smaller image is generated, which is then stretched.",
+  "ranges": "Not specifying ranges will set them automatically for a centered/square plot."
+}

@@ -1,0 +1,41 @@
+[
+  {
+    "func": "(z^3 - z) / (z + i)",
+    "reMin": -3
+  },
+  {
+    "func": "(z^2 - i) / (z^2 - 1)",
+    "reMin": -2
+  },
+  {
+    "func": "if( re(z) < 0, z^2, z )",
+    "reMin": -5
+  },
+  {
+    "func": "(z + 1) / (z - 1)",
+    "reMin": -3
+  },
+  {
+    "func": "e ^ (1 / z)",
+    "reMin": -0.5
+  },
+  {
+    "func": "z^2 - 1",
+    "iterations": 5,
+    "reMin": -2
+  },
+  {
+    "func": "cot(z) + i*sin(z)",
+    "iterations": 2,
+    "reMin": -5
+  },
+  {
+    "func": "(sinh(z) + sin(z)) / 2",
+    "iterations": 2,
+    "reMin": -4
+  },
+  {
+    "func": "sum(k^-z, k, 0, 5)",
+    "reMin": -15
+  }
+]

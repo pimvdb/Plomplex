@@ -1,0 +1,380 @@
+@import "http://fonts.googleapis.com/css?family=Short+Stack|Open+Sans";
+@import "reset";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  line-height: 1.6;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  &, summary, summary * {
+    cursor: default !important;
+  }
+
+  &, input {
+    font-size: 15pt;
+  }
+
+  &.busy {
+    &, * {
+      cursor: progress !important;
+    }
+  }
+
+  input {
+    font-family: monospace;
+    letter-spacing: -1px;
+  }
+
+  &, input[type="button"], input[type="submit"] {
+    font-family: "Open Sans", sans-serif;
+  }
+}
+
+#mainContainer {
+  display: -webkit-flex;
+  height: 100%;
+  div.main {
+    -webkit-flex: 1;
+    width: 100%;
+    height: 100%;
+    border: 1px solid gray;
+    border-bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    div.error {
+      display: none;
+      z-index: 99;
+      background-color: red;
+      color: white;
+      font-family: monospace;
+      padding: 5px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      &:before {
+        content: "Error:\a";
+        white-space: pre;
+      }
+    }
+    div.welcome {
+      padding: 0 20px;
+      h1 {
+        font-size: 200%;
+        padding: 20px 0;
+      }
+      hr {
+        margin: 30px 0;
+      }
+      .pleaseWait {
+        display: none;
+        margin-left: 15px;
+      }
+      .whatsNew {
+        .dismiss {
+          margin-left: 20px;
+        }
+      }
+    }
+    div.plot.container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  }
+  form.plot {
+    width: 375px;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    font-size: 80%;
+    padding-bottom: 10px;
+    header {
+      display: -webkit-flex;
+      border-bottom: 1px solid gray;
+      margin-bottom: 5px;
+      position: relative;
+      border-bottom: 1px solid gray;
+      h1.logo {
+        padding-top: 3px;
+        margin: 0 auto 20px auto;
+        font: 30pt "Short Stack", sans-serif;
+        text-align: center;
+      }
+      div.version {
+        position: absolute;
+        right: 7px;
+        top: 0;
+      }
+      .fakeLink.help {
+        position: absolute;
+        right: 5px;
+        bottom: 0;
+      }
+      div.busy {
+        display: -webkit-flex;
+        -webkit-align-items: center;
+        height: 20px;
+        position: absolute;
+        left: 10px;
+        bottom: 2px;
+        progress {
+          width: 150px;
+          height: 15px;
+        }
+        span {
+          margin: 0 5px;
+        }
+        .fakeLink {
+          cursor: pointer !important;
+        }
+      }
+    }
+    table.options {
+      width: 100%;
+      td {
+        padding: 0 10px;
+      }
+      tr.mainButtons {
+        div {
+          display: -webkit-flex;
+          input {
+            -webkit-flex: 1;
+            height: 50px;
+          }
+        }
+      }
+      tr.formula {
+        td {
+          padding: 5px 15px;
+          input {
+            width: 100%;
+          }
+        }
+      }
+      tr.iterations {
+        input {
+          margin-left: 0;
+        }
+      }
+      tr.size {
+        div {
+          display: -webkit-flex;
+          -webkit-align-items: center;
+          input {
+            -webkit-flex: 1;
+            width: 0;
+          }
+          .timesCharacter {
+            margin: 0 5px;
+          }
+        }
+      }
+      tr.gridLines {
+        input.gridLinesWidth {
+          width: 100px;
+          margin: 0 5px;
+        }
+      }
+      tr.modulus {
+        label {
+          display: block;
+        }
+        div.luminance.container {
+          display: inline-block;
+          padding: 0 10px;
+          margin-bottom: 5px;
+          width: 100%;
+          input {
+            width: 100%;
+          }
+        }
+      }
+      tr.ranges {
+        div {
+          display: -webkit-flex;
+          -webkit-align-items: center;
+          input {
+            -webkit-flex: 1;
+            width: 0;
+            margin: 0 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
+label.help {
+  border-bottom: 1px dotted black;
+  cursor: help;
+}
+
+.help.container {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 350px;
+  background-color: rgba(0, 0, 0, 0.5);
+  .overlay {
+    width: 80%;
+    min-width: 400px;
+    line-height: 150%;
+    margin: 50px auto 50px auto;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 60px 40px;
+    background-color: rgb(240, 240, 240);
+    position: relative;
+    > header {
+      margin: -30px 0 20px 15px;
+      font-size: 145%;
+    }
+    .close {
+      position: absolute;
+      right: 16px;
+      top: 15px;
+    }
+    .content {
+      details {
+        summary {
+          display: block;
+          font-size: 125%;
+          padding: 10px;
+          margin: 0;
+          @border: 1px solid #bbb;
+          border-top: @border;
+          border-bottom: @border;
+          margin-top: -1px;
+          cursor: pointer !important;
+          + * {
+            margin-top: 15px;
+          }
+          &::-webkit-details-marker {
+            // display: none;
+          }
+        }
+        &.exampleFunctions {
+          li {
+            font-family: monospace;
+            margin-bottom: 10px;
+            &, * {
+              cursor: pointer !important;
+            }
+            a {
+              text-decoration: none;
+            }
+          }
+        }
+        &.faq {
+          li {
+            list-style-type: none;
+            &:nth-child(2n + 1) {
+              margin-top: 30px;
+              &:before {
+                content: "Q";
+                font-weight: bold;
+                margin-right: 10px;
+              }
+            }
+            &:nth-child(2n) {
+              margin-left: 75px;
+              &:before {
+                content: "A";
+                font-weight: bold;
+                margin-right: 10px;
+              }
+            }
+          }
+        }
+        :last-child {
+          margin-bottom: 15px;
+        }
+        p {
+          margin: 15px 0;
+        }
+        > :not(summary) {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+
+:not(input), input[type="range"] {
+  -webkit-user-select: none;
+}
+
+div.help *, div.welcome * {
+  -webkit-user-select: text;
+  cursor: auto;
+}
+
+details {
+  summary {
+    display: inline;
+    margin-bottom: 5px;
+    cursor: pointer !important;
+  }
+}
+
+canvas.plot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  cursor: move !important;
+}
+
+input[type="button"], input[type="submit"] {
+  letter-spacing: 1px;
+}
+
+code, pre {
+  font-family: monospace;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+em {
+  font-style: italic;
+}
+
+li {
+  margin-left: 30px;
+  list-style-type: disc;
+}
+
+a, .fakeLink {
+  color: blue;
+  text-decoration: underline;
+  &, * {
+    cursor: pointer !important;
+  }
+}
+
+div.bindRange {
+  display: -webkit-flex;
+  input[type="range"] {
+    -webkit-flex: 1;
+  }
+  input[type="text"] {
+    width: 50px;
+  }
+}

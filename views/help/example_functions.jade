@@ -1,0 +1,8 @@
+details.exampleFunctions
+  summary
+    | Example functions
+  each val in exampleFunctions
+    li(data-func="#{JSON.stringify(val)}")
+      a(href="#") #{val.func}
+      - if("iterations" in val)
+        span  (#{val.iterations} iterations)

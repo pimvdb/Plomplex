@@ -1,0 +1,170 @@
+start
+  = logical
+  / _ {
+    return "";
+  }
+
+whitespace = " " / "\t" / "\r" / "\n"
+_ = whitespace*
+
+addOperator = "+" / "-"
+
+timesOperator = letter:("*" / "/" / (!"*" &standalone)) {
+  return typeof letter === "string" ? letter : "*";
+}
+
+powOperator = "^"
+
+compareOperator = "<=" / ">=" / "<" / ">" / "==" / "!="
+
+logicalOperator = "&&" / "||"
+
+//first letter not "i" or "z"
+funcName = firstLetter:[a-z!]i rest:[a-z0-9]i* {
+  return (firstLetter + rest.join("")).toLowerCase();
+}
+
+constants = letter:("e"i / "pi"i) {
+  return letter.toLowerCase();
+}
+
+logical
+  = left:compare _ tail:(logicalOperator _ compare)* {
+      return build(left, tail);
+    }
+  / compare
+
+compare
+  = left:add _ tail:(compareOperator _ add)* {
+      return build(left, tail);
+    }
+  / add
+
+add
+  = left:times _ tail:(addOperator _ times)* {
+      return build(left, tail);
+    }
+  / times
+
+times
+  = left:pow _ tail:(timesOperator _ pow)* {
+      return build(left, tail);
+    }
+  / pow
+
+pow
+  = left:upperTimes _ tail:(powOperator _ pow)* {
+      return build(left, tail);
+    }
+  / upperTimes
+
+upperTimes
+  = left:primary _ tail:(_ !"-" upperTimes)* !powOperator {
+      return build(left, tail, "*")
+    }
+  / primary
+
+primary
+  = left:standalone _ &"(" _ right:start {
+      return {
+        operator: "*",
+        left: left,
+        right: right
+      };
+    }
+  / "(" _ left:start _ ")" _ &"(" _ right:pow {
+      return {
+        operator: "*",
+        left: left,
+        right: right
+      };
+    }
+  / type:("sum"/"product") _ "(" _ params:params _ ")" {
+      return {
+        loop: {
+          type:     type,
+          func:     params[0],
+          variable: params[1],
+          from:     params[2],
+          to:       params[3]
+        }
+      };
+    }
+  / func:funcName _ "(" _ params:params _ ")" {
+      return {
+        func: func,
+        params: params
+      };
+    }
+  / "|" _ val:start _ "|" {
+      return {
+        func: "|",
+        params: [val]
+      };
+    }
+  / "(" _ val:start _ ")" {
+      return val;
+    }
+  / "-" _ val:times {
+      return {
+        func: "negate",
+        params: [val]
+      };
+    }
+  / standalone
+
+params
+  = first:start _ others:("," _ start)* {
+      return [first].concat(others.map(function(v) {
+        return v[2];
+      }));
+    }
+
+standalone
+  = _ val:(constant / imaginary / letter) {
+      return val;
+    }
+
+constant
+  = letter:constants {
+      return {
+        constant: letter
+      };
+    }
+
+imaginary
+  = "i" {
+      return {
+        imaginary: 1
+      };
+    }
+  / digits
+
+letter
+  = letter:[a-z]i {
+      return {
+        variable: letter
+      };
+    }
+
+numberPart
+  = digits:[0-9]+ {
+      return digits.join("");
+    }
+
+digits
+  = "." right:numberPart {
+      return {
+        real: +("." + right)
+      };
+    }
+  / left:numberPart "." right:numberPart {
+      return {
+        real: +(left + "." + right)
+      };
+    }
+  / left:numberPart "."? {
+      return {
+        real: +left
+      };
+    }

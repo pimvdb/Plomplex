@@ -1,0 +1,19 @@
+mixin css(path)
+  link(rel="stylesheet", href="#{path}")
+
+mixin js(path)
+  script(src="#{path}")
+
+mixin ranges(axis, defaultValue)
+  tr.ranges(class="#{axis}")
+    td
+      label(data-for=".#{axis} .min") #{axis}:
+    td
+      div
+        | [
+        input.min(type="text", value="#{defaultValue || ""}", autocomplete="off",
+          spellcheck="false", data-key="#{axis}Min")
+        | ,
+        input.max(type="text", value="", autocomplete="off",
+          spellcheck="false", data-key="#{axis}Max")
+        | ]

@@ -1,0 +1,5 @@
+gen
+node_modules
+webstore
+nodester.bat
+.nodester.rc
